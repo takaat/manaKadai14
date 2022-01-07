@@ -22,18 +22,18 @@ struct ContentView: View {
 
     var body: some View {
         NavigationView {
-            List {
-                ForEach(items) { item in
-                    ItemView(item: item)
-                }
-            }.listStyle(.plain)
+            List(items) { item in
+                ItemView(item: item)
+            }
+            .listStyle(.plain)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: { isShowAddItemView = true },
                            label: { Image(systemName: "plus") })
                 }
             }
-        }.fullScreenCover(isPresented: $isShowAddItemView) {
+        }
+        .fullScreenCover(isPresented: $isShowAddItemView) {
             AddItemView(isShowView: $isShowAddItemView, items: $items)
         }
     }
