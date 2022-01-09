@@ -34,15 +34,21 @@ struct ContentView: View {
             }
         }
         .fullScreenCover(isPresented: $isShowAddItemView) {
-            AddItemView(isShowView: $isShowAddItemView, items: $items)
+            AddItemView(
+                isShowView: $isShowAddItemView,
+                didSave: { item in
+                    items.append(item)
+                }
+            )
         }
     }
 }
 
 struct AddItemView: View {
     @Binding var isShowView: Bool
-    @Binding var items: [Item]
     @State private var name = ""
+
+    let didSave: (Item) -> Void
 
     var body: some View {
         NavigationView {
@@ -63,7 +69,7 @@ struct AddItemView: View {
 
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Save") {
-                        items.append(.init(name: name, isChecked: false))
+                        didSave(.init(name: name, isChecked: false))
                         isShowView = false
                     }
                 }
@@ -97,7 +103,7 @@ struct ContentView_Previews: PreviewProvider {
 
 struct AddItemView_Previews: PreviewProvider {
     static var previews: some View {
-        AddItemView(isShowView: .constant(true), items: .constant([.init(name: "りんご", isChecked: true)]))
+        AddItemView(isShowView: .constant(true), didSave: { _ in })
     }
 }
 
